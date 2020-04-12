@@ -4,7 +4,7 @@
 [![standard badge](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![npm](https://img.shields.io/npm/v/run-in-playwright.svg)](https://www.npmjs.com/package/run-in-playwright)
 
-Run a function in a clean browser environment using playwright and return the result. Browserify is automatically run on the closure, so require can be used.
+Run a function in a clean browser environment using playwright and return the result. The function is automatically passed through browserify, so `require` can be used.
 
 ## Usage
 
@@ -12,7 +12,7 @@ Run a function in a clean browser environment using playwright and return the re
 const runInPlaywright = require('run-in-playwright')
 
 test('window object should exist', async () => {
-  // the closure runs on a browser launched by playwright
+  // the function runs on a browser launched by playwright
   const isWindow = await runInPlaywright(() => {
     return !!window
   })
@@ -48,7 +48,7 @@ test('sum() should work in browser', async () => {
 
 `async runInPlaywright(script, [playwrightBrowser])`
 
-`script` is a function to be run in the browser environment. It it passed using `closure.toString()`, so its scope is a browser script tag's (no scope is transfered from node). `require` and node builtins will work however, because the closure is browserified before being sent to the browser. Require will be relative to `CWD` (the directory that the script is run from like `$ node index.js`). `script` is awaited, so both sync and async functions will work.
+`script` is a function to be run in the browser environment. It it passed using `script.toString()`, so its scope is a browser script tag's (no scope is transfered from node). `require` and node builtins will work however, because the script is browserified before being sent to the browser. Require will be relative to `CWD` (the directory that the script is run from like `$ node index.js`). `script` is awaited, so both sync and async functions will work.
 
 `playwrightBrowser` is a [playwright browser instance](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser) to be used instead of creating a new headless chromium process. This allows control over the evironment the script is run on. `browser.newPage()` is called to run the script on, and that page will be closed once the script finishes execution, but a passed in browser instance will not be closed by `runInBrowser()`.
 
